@@ -1,9 +1,11 @@
-let title;
-let screens;
-let screenPrice;
-let rollback;
-let fullPrice;
-let adaptive;
+let title = "строка с названием проекта";
+let screens = ["Простые, Сложные, Интерактивные"];
+let screenPrice = 1;
+let rollback = 99;
+let fullPrice = 1000000000;
+let adaptive = true;
+
+
 
 alert ("Модуль 01, Урок 02");
 
