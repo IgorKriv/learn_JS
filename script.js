@@ -1,26 +1,61 @@
-let title = "строка с названием проекта";
-let screens = "Простые, Сложные, Интерактивные";
-let screenPrice = 1;
-let rollback = 99;
-let fullPrice = 1000000000;
-let adaptive = true;
+'use strict'
 
-//Вывести в консоль тип данных значений переменных title, fullPrice, adaptive;
-console.log(title);
-console.log(fullPrice);
-console.log(adaptive);
+/* *
+УСЛОЖНЕННОЕ ЗАДАНИЕ: 1 БАЛЛ
 
-//Вывести в консоль длину строки из переменной screens
-console.log(screens.length);
+Необходимо выполнить в отдельном JS файле, подключенному к отдельной HTML странице
 
-//Вывести в консоль “Стоимость верстки экранов (screenPrice) рублей/ долларов/гривен/юани” и “Стоимость разработки сайта (fullPrice) рублей/ долларов/гривен/юани”
-console.log("Стоимость верстки экранов " + screenPrice + " рублей/ долларов/гривен/юани");
-console.log("Стоимость разработки сайта " + fullPrice + " рублей/ долларов/гривен/юани");
+1). Переменная lang может принимать 2 значения: 'ru' 'en'.
 
-//Привести строку screens к нижнему регистру и разбить строку на массив, вывести массив в консоль
-console.log(screens.toLowerCase());
-console.log(screens.split(','));
+Написать условия при котором в зависимости от значения lang будут выводится дни недели на русском или английском языке. Решите задачу
 
-//Вывести в консоль Процент отката посреднику за работу (fullPrice * (rollback / 100))
-console.log(fullPrice * (rollback / 100));
+a) через if,
 
+b) через switch-case
+
+c) через многомерный массив без ифов и switch.
+
+2). У нас есть переменная namePerson. Если значение этой переменной “Артем” то вывести в консоль “директор”, если значение “Александр” то вывести в консоль “преподаватель”, с любым другим значением вывести в консоль “студент”
+
+Решить задачу с помощью нескольких тернарных операторов, без использования if или switch
+
+3). Запушить проект в репозиторий для усложненных заданий на GitHub
+*/
+
+//1.a
+let lang = prompt('Введите язык: ru или en');
+
+if (lang === 'ru') {
+  console.log('Понедельник, Вторник, Среда, Четверг, Пятница, Суббота, Воскресенье');
+} else if (lang === 'en') {
+  console.log('Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday');
+} 
+
+//1.b
+switch (lang) {
+  case 'ru':
+    console.log('Понедельник, Вторник, Среда, Четверг, Пятница, Суббота, Воскресенье');
+    break;
+  case 'en':
+    console.log('Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday');
+    break;
+ }
+
+ //1.c
+ let days = [
+  ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
+  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+];
+
+let index = { ru: 0, en: 1 };
+
+console.log(days[index[lang]]);
+
+//2
+let namePerson = prompt('Введите имя: Артем, Александр или любое другое');
+
+let role = namePerson === 'Артем'
+  ? 'директор'
+  : (namePerson === 'Александр' ? 'преподаватель' : 'студент');
+
+console.log(role);
