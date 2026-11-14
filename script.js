@@ -1,26 +1,108 @@
-let title = "строка с названием проекта";
-let screens = "Простые, Сложные, Интерактивные";
-let screenPrice = 1;
-let rollback = 99;
-let fullPrice = 1000000000;
-let adaptive = true;
+'use strict';
 
-//Вывести в консоль тип данных значений переменных title, fullPrice, adaptive;
-console.log(title);
-console.log(fullPrice);
-console.log(adaptive);
+const appData = {
+  title: '',
+  screens: '',
+  screenPrice: 0,
+  adaptive: true,
+  rollback: 12,      
+  service1: '',
+  servicePrice1: 0,
+  service2: '',
+  servicePrice2: 0,
+  allServicePrices: 0,
+  fullPrice: 0,
+  servicePercentPrice: 0,
 
-//Вывести в консоль длину строки из переменной screens
-console.log(screens.length);
+  
+  isNumber: function (num) {
+    return !isNaN(parseFloat(num)) && isFinite(num);
+  },
 
-//Вывести в консоль “Стоимость верстки экранов (screenPrice) рублей/ долларов/гривен/юани” и “Стоимость разработки сайта (fullPrice) рублей/ долларов/гривен/юани”
-console.log("Стоимость верстки экранов " + screenPrice + " рублей/ долларов/гривен/юани");
-console.log("Стоимость разработки сайта " + fullPrice + " рублей/ долларов/гривен/юани");
+  
+  getPrice: function (question) {
+    let value;
+    do {
+      value = prompt(question);
+    } while (!this.isNumber(value)); 
+    return Number(value);
+  },
 
-//Привести строку screens к нижнему регистру и разбить строку на массив, вывести массив в консоль
-console.log(screens.toLowerCase());
-console.log(screens.split(','));
+  
+  asking: function () {
+    
+    this.title = prompt("Как называется ваш проект?", "Калькулятор верстки");
+    this.screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные");
+    
+    this.screenPrice = this.getPrice("Сколько будет стоить данная работа?");
+    this.adaptive = confirm("Нужен ли адаптив на сайте?");
+    
+    this.service1 = prompt("Какой дополнительный тип услуги нужен?");
+    this.servicePrice1 = this.getPrice("Сколько это будет стоить?");
+    
+    this.service2 = prompt("Какой дополнительный тип услуги нужен?");
+    this.servicePrice2 = this.getPrice("Сколько это будет стоить?");
+  },
 
-//Вывести в консоль Процент отката посреднику за работу (fullPrice * (rollback / 100))
-console.log(fullPrice * (rollback / 100));
+  getAllServicePrices: function () {
+    return this.servicePrice1 + this.servicePrice2;
+  },
 
+  getFullPrice: function () {
+    return this.screenPrice + this.allServicePrices;
+  },
+
+  getServicePercentPrice: function () {
+    const rollbackSum = this.fullPrice * (this.rollback / 100);
+    return Math.ceil(this.fullPrice - rollbackSum);
+  },
+
+  getTitle: function () {
+    const trimmed = (this.title || '').trim();
+    if (trimmed === '') return ''; 
+    return trimmed[0].toUpperCase() + trimmed.slice(1).toLowerCase();
+  },
+
+  getRollbackMessage: function (price) {
+    if (price >= 30000) {
+      return "Даем скидку в 10%, стоимость проекта : " + Math.ceil(price * 0.9);
+    } else if (price >= 15000 && price < 30000) {
+      return "Даем скидку в 5%, стоимость проекта : " + Math.ceil(price * 0.95);
+    } else if (price > 0 && price < 15000) {
+      return "Скидка не предусмотрена, стоимость проекта : " + price;
+    } else {
+      return "Что то пошло не так";
+    }
+  },
+
+  logger: function () {
+    console.log('=== Вывод всех свойств и методов через for in ===');
+ 
+    for (let key in this) {
+      
+      console.log(key, ':', this[key]);
+    }
+
+    console.log('Название проекта: ' + this.getTitle());
+    console.log('Типы экранов для разработки: ' + this.screens);
+    console.log(this.getRollbackMessage(this.fullPrice));
+    console.log('Стоимость за вычетом отката посреднику: ' + this.servicePercentPrice);
+  },
+
+  
+  start: function () {
+  
+    this.asking();
+    
+    
+    this.allServicePrices = this.getAllServicePrices();
+    this.fullPrice = this.getFullPrice();
+    this.servicePercentPrice = this.getServicePercentPrice();
+    
+  
+    this.logger();
+  }
+};
+
+
+appData.start();
