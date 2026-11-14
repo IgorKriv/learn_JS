@@ -1,26 +1,31 @@
-let title = "строка с названием проекта";
-let screens = "Простые, Сложные, Интерактивные";
-let screenPrice = 1;
-let rollback = 99;
-let fullPrice = 1000000000;
-let adaptive = true;
+'use strict'
 
-//Вывести в консоль тип данных значений переменных title, fullPrice, adaptive;
-console.log(title);
-console.log(fullPrice);
-console.log(adaptive);
+/* *
+Необходимо выполнить в отдельном JS файле, подключенному к отдельной HTML странице
 
-//Вывести в консоль длину строки из переменной screens
-console.log(screens.length);
+1) Создать переменную num со значением 266219 (тип данных число)
 
-//Вывести в консоль “Стоимость верстки экранов (screenPrice) рублей/ долларов/гривен/юани” и “Стоимость разработки сайта (fullPrice) рублей/ долларов/гривен/юани”
-console.log("Стоимость верстки экранов " + screenPrice + " рублей/ долларов/гривен/юани");
-console.log("Стоимость разработки сайта " + fullPrice + " рублей/ долларов/гривен/юани");
+2) Вывести в консоль произведение (умножение) цифр этого числа
 
-//Привести строку screens к нижнему регистру и разбить строку на массив, вывести массив в консоль
-console.log(screens.toLowerCase());
-console.log(screens.split(','));
+Например: число 123, при помощи javaScript получить каждую цифру ( 1, 2, 3 ) и перемножить их. Правильно использовать цикл или методы перебора.
 
-//Вывести в консоль Процент отката посреднику за работу (fullPrice * (rollback / 100))
-console.log(fullPrice * (rollback / 100));
+3) Полученный результат возвести в степень 3, используя только 1 оператор (Math.pow не подходит)
 
+4) Вывести в консоль первые 2 цифры полученного числа
+*/
+
+// 1
+let num = +266219;
+
+// 2
+let str = String(num);
+let mult = str[0] * str[1] * str[2] * str[3] * str[4] * str[5];
+console.log(mult); 
+
+// 3
+let cubed = mult ** 3;
+console.log(cubed); 
+
+// 4
+let firstTwo = Number(String(cubed).slice(0, 2));
+console.log(firstTwo); 
