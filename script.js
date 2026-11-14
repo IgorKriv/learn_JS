@@ -1,26 +1,68 @@
-let title = "строка с названием проекта";
-let screens = "Простые, Сложные, Интерактивные";
-let screenPrice = 1;
-let rollback = 99;
-let fullPrice = 1000000000;
-let adaptive = true;
+'use strict';
 
-//Вывести в консоль тип данных значений переменных title, fullPrice, adaptive;
-console.log(title);
-console.log(fullPrice);
-console.log(adaptive);
+const rollback = 5;
 
-//Вывести в консоль длину строки из переменной screens
-console.log(screens.length);
+const title = prompt("Как называется ваш проект?");
+const screens = prompt("Какие типы экранов нужно разработать? \n(пример: \"Простые, Сложные, Интерактивные\")");
+const screenPrice = prompt("Сколько будет стоить данная работа? \n(пример: 12000)");
+const adaptive = confirm("Нужен ли адаптив на сайте?");
 
-//Вывести в консоль “Стоимость верстки экранов (screenPrice) рублей/ долларов/гривен/юани” и “Стоимость разработки сайта (fullPrice) рублей/ долларов/гривен/юани”
-console.log("Стоимость верстки экранов " + screenPrice + " рублей/ долларов/гривен/юани");
-console.log("Стоимость разработки сайта " + fullPrice + " рублей/ долларов/гривен/юани");
+const service1 = prompt("Какой дополнительный тип услуги нужен?");
+const servicePrice1 = prompt("Сколько это будет стоить?");
+const service2 = prompt("Какой дополнительный тип услуги нужен?");
+const servicePrice2 = prompt("Сколько это будет стоить?");
 
-//Привести строку screens к нижнему регистру и разбить строку на массив, вывести массив в консоль
-console.log(screens.toLowerCase());
-console.log(screens.split(','));
+const getAllServicePrices = function () {
+  return +servicePrice1 + +servicePrice2;
+};
 
-//Вывести в консоль Процент отката посреднику за работу (fullPrice * (rollback / 100))
-console.log(fullPrice * (rollback / 100));
+function getFullPrice() {
+  return +screenPrice + allServicePrices;
+}
 
+function getTitle() {
+  const trimmedTitle = title.trim();
+  const firstLetter = trimmedTitle.charAt(0).toUpperCase();
+  const restOfTitle = trimmedTitle.slice(1).toLowerCase();
+  return firstLetter + restOfTitle;
+}
+
+function getServicePercentPrices() {
+  const rollbackSum = fullPrice * (rollback / 100);
+  return Math.ceil(fullPrice - rollbackSum);
+}
+
+function showTypeOf(value) {
+  console.log(typeof value);
+}
+
+function getRollbackMessage() {
+  switch (true) {
+    case (fullPrice > 30000):
+      return "Даем скидку в 10%, стоимость проекта : " + Math.ceil(fullPrice * 0.9);
+    case (fullPrice >= 15000 && fullPrice <= 30000):
+      return "Даем скидку в 5%, стоимость проекта : " + Math.ceil(fullPrice * 0.95);
+    case (fullPrice > 0 && fullPrice < 15000):
+      return "Скидка не предусмотрена, стоимость проекта : " + fullPrice;
+    default:
+      return "Что то пошло не так";
+  }
+}
+
+const allServicePrices = getAllServicePrices();
+const fullPrice = getFullPrice();
+const servicePercentPrice = getServicePercentPrices();
+
+showTypeOf(title);
+showTypeOf(screens);
+showTypeOf(screenPrice);
+showTypeOf(adaptive);
+showTypeOf(service1);
+showTypeOf(servicePrice1);
+showTypeOf(service2);
+showTypeOf(servicePrice2);
+
+console.log('Название проекта: ' + getTitle());
+console.log('Типы экранов для разработки: ' + screens);
+console.log(getRollbackMessage());
+console.log('Стоимость за вычетом отката посреднику: ' + servicePercentPrice);
