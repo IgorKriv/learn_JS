@@ -1,5 +1,8 @@
 'use strict';
 
+let rollback = 5;
+
+
 //Урок М01 Урок 03.
 
 //3) Спрашиваем у пользователя “Как называется ваш проект?” и результат сохраняем в переменную title
@@ -35,7 +38,7 @@ let fullPrice = +screenPrice + +servicePrice1 + +servicePrice2;
  * в большую сторону (методы объекта Math в помощь). 
  * Вывести servicePercentPrice в консоль.
  */
-let servicePercentPrice = Math.ceil(fullPrice - fullPrice * (5 / 100));
+let servicePercentPrice = Math.ceil(fullPrice - fullPrice * (rollback / 100));
 console.log(servicePercentPrice);
 
 /**
