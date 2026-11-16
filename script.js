@@ -23,10 +23,10 @@ const appData = {
     return typeof str === 'string' && str.trim() !== '' && !this.isNumber(str)
   },
   
-  getString: function(question){
+  getString: function(question, defaultValue){
     let value;
   do {
-      value = prompt(question);
+      value = prompt(question, defaultValue);
      } while (!this.isString(value))
         return value.trim();
   }, 
@@ -41,9 +41,9 @@ const appData = {
 
    getPrice: function (question) {
     let value;
-    do {
+
       value = this.getNumeric(question);
-    } while (!this.isNumber(value)); 
+ 
     return Number(value);
   },
 
