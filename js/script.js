@@ -195,6 +195,7 @@ const appData = {
     fullTotalCount.value = appData.fullPrice;
     totalRollback.value = appData.servicePercentPrice; //3
   }
+  
 };
 
 appData.init();
