@@ -24,7 +24,7 @@ const appData = {
     startBtn.addEventListener('click', appData.start);
     buttonPlus.addEventListener('click', appData.addScreenBlock);
 
-    // ЗАДАЧА 2: обработчик для range (откат посреднику)
+    //2
     const rollbackRange = document.querySelector('.rollback input[type="range"]');
     const rollbackSpan = document.querySelector('.rollback .range-value');
 
@@ -47,14 +47,15 @@ const appData = {
     const lastScreen = screens[screens.length - 1];
     const cloneScreen = lastScreen.cloneNode(true);
     
-    // Очищаем склонированный блок, чтобы пользователь заполнил его заново
+    
+
     cloneScreen.querySelector('select').value = '';
     cloneScreen.querySelector('input').value = '';
     
     lastScreen.after(cloneScreen);
   },
 
-  // ЗАДАЧА 1: Валидация экранов
+  //1
   validateScreens: function () {
     const screens = document.querySelectorAll('.screen');
     let filledCount = 0;
@@ -66,16 +67,16 @@ const appData = {
       const isSelectEmpty = select.value === '';
       const isInputEmpty = input.value.trim() === '';
 
-      // Если блок полностью пустой — пропускаем
+      
       if (isSelectEmpty && isInputEmpty) continue;
 
-      // Если заполнен только один из двух элементов
+      
       if (isSelectEmpty || isInputEmpty) {
         alert('Заполните тип экрана и количество полностью либо оставьте блок пустым');
         return false;
       }
 
-      // Если количество не число или <= 0
+      
       if (isNaN(parseFloat(input.value)) || +input.value <= 0) {
         alert('Введите корректное количество экранов (больше 0)');
         return false;
@@ -93,7 +94,7 @@ const appData = {
   },
 
   start: function () {
-    // Запускаем проверку перед расчётом
+    
     if (!appData.validateScreens()) return;
 
     appData.addScreens();
@@ -105,7 +106,7 @@ const appData = {
 
   addScreens: function () {
     const screens = document.querySelectorAll('.screen');
-    appData.screens = []; // ВАЖНО: очищаем массив перед новым расчётом
+    appData.screens = []; // 
 
     for (let i = 0; i < screens.length; i++) {
       const select = screens[i].querySelector('select');
@@ -119,7 +120,7 @@ const appData = {
         id: i,
         name: selectName,
         price: +select.value * +input.value,
-        count: +input.value // ЗАДАЧА 4: сохраняем количество
+        count: +input.value //4
       });
     }
   },
@@ -128,7 +129,7 @@ const appData = {
     const otherItemsPercent = document.querySelectorAll('.percent');
     const otherItemsNumber = document.querySelectorAll('.number');
 
-    // Очищаем объекты перед новым расчётом
+    
     appData.servicesPercent = {};
     appData.servicesNumber = {};
 
@@ -156,7 +157,7 @@ const appData = {
   },
 
   addPrices: function () {
-    // ВАЖНО: обнуляем накопители, чтобы при повторном клике суммы не удваивались
+    
     appData.screenPrice = 0;
     appData.screenCount = 0;
     appData.servicePricesNumber = 0;
@@ -164,7 +165,7 @@ const appData = {
 
     for (let i = 0; i < appData.screens.length; i++) {
       appData.screenPrice += appData.screens[i].price;
-      appData.screenCount += appData.screens[i].count; // ЗАДАЧА 4: считаем общее количество
+      appData.screenCount += appData.screens[i].count; //4
     }
 
     for (let key in appData.servicesNumber) {
@@ -177,7 +178,7 @@ const appData = {
 
     appData.fullPrice = appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent;
 
-    // ЗАДАЧА 3: Перенесенная логика getServicePercentPrice
+    //3
     appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
   },
 
@@ -189,10 +190,10 @@ const appData = {
     const totalRollback = document.querySelector('#total-count-rollback');
 
     total.value = appData.screenPrice;
-    totalCount.value = appData.screenCount; // ЗАДАЧА 4: вывод количества
+    totalCount.value = appData.screenCount; //4
     totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber;
     fullTotalCount.value = appData.fullPrice;
-    totalRollback.value = appData.servicePercentPrice; // ЗАДАЧА 3: вывод цены с откатом
+    totalRollback.value = appData.servicePercentPrice; //3
   }
 };
 
