@@ -10,7 +10,7 @@ const appData = {
   screenCount: 0,
   adaptive: true,
   rollback: 0,
-  
+
   servicesPercent: {},
   servicesNumber: {},
   servicePricesPercent: 0,
@@ -18,19 +18,27 @@ const appData = {
   fullPrice: 0,
   servicePercentPrice: 0,
 
+  
+  isCalculated: false,
+
   init: function () {
     appData.addTitle();
 
     startBtn.addEventListener('click', appData.start);
     buttonPlus.addEventListener('click', appData.addScreenBlock);
 
-    //2
+    
     const rollbackRange = document.querySelector('.rollback input[type="range"]');
     const rollbackSpan = document.querySelector('.rollback .range-value');
 
     rollbackRange.addEventListener('input', function () {
       appData.rollback = +rollbackRange.value;
       rollbackSpan.textContent = appData.rollback + '%';
+
+
+      if (appData.isCalculated) {
+        appData.updateServicePercentPrice();
+      }
     });
   },
 
@@ -46,16 +54,14 @@ const appData = {
     const screens = document.querySelectorAll('.screen');
     const lastScreen = screens[screens.length - 1];
     const cloneScreen = lastScreen.cloneNode(true);
-    
-    
 
     cloneScreen.querySelector('select').value = '';
     cloneScreen.querySelector('input').value = '';
-    
+
     lastScreen.after(cloneScreen);
   },
 
-  //1
+
   validateScreens: function () {
     const screens = document.querySelectorAll('.screen');
     let filledCount = 0;
@@ -63,20 +69,17 @@ const appData = {
     for (let i = 0; i < screens.length; i++) {
       const select = screens[i].querySelector('select');
       const input = screens[i].querySelector('input');
-      
+
       const isSelectEmpty = select.value === '';
       const isInputEmpty = input.value.trim() === '';
 
-      
       if (isSelectEmpty && isInputEmpty) continue;
 
-      
       if (isSelectEmpty || isInputEmpty) {
         alert('Заполните тип экрана и количество полностью либо оставьте блок пустым');
         return false;
       }
 
-      
       if (isNaN(parseFloat(input.value)) || +input.value <= 0) {
         alert('Введите корректное количество экранов (больше 0)');
         return false;
@@ -94,24 +97,28 @@ const appData = {
   },
 
   start: function () {
-    
     if (!appData.validateScreens()) return;
 
     appData.addScreens();
     appData.addServices();
     appData.addPrices();
-    
+
     appData.showResult();
+
+    // appData.logger(); 
+
+    
+    appData.isCalculated = true;
   },
 
   addScreens: function () {
     const screens = document.querySelectorAll('.screen');
-    appData.screens = []; // 
+    appData.screens = [];
 
     for (let i = 0; i < screens.length; i++) {
       const select = screens[i].querySelector('select');
       const input = screens[i].querySelector('input');
-      
+
       if (select.value === '' || input.value.trim() === '') continue;
 
       const selectName = select.options[select.selectedIndex].textContent;
@@ -120,7 +127,7 @@ const appData = {
         id: i,
         name: selectName,
         price: +select.value * +input.value,
-        count: +input.value //4
+        count: +input.value
       });
     }
   },
@@ -129,7 +136,6 @@ const appData = {
     const otherItemsPercent = document.querySelectorAll('.percent');
     const otherItemsNumber = document.querySelectorAll('.number');
 
-    
     appData.servicesPercent = {};
     appData.servicesNumber = {};
 
@@ -156,8 +162,15 @@ const appData = {
     }
   },
 
+  
+  updateServicePercentPrice: function () {
+    appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
+
+    const totalRollback = document.querySelector('#total-count-rollback');
+    totalRollback.value = appData.servicePercentPrice;
+  },
+
   addPrices: function () {
-    
     appData.screenPrice = 0;
     appData.screenCount = 0;
     appData.servicePricesNumber = 0;
@@ -165,7 +178,7 @@ const appData = {
 
     for (let i = 0; i < appData.screens.length; i++) {
       appData.screenPrice += appData.screens[i].price;
-      appData.screenCount += appData.screens[i].count; //4
+      appData.screenCount += appData.screens[i].count;
     }
 
     for (let key in appData.servicesNumber) {
@@ -178,8 +191,8 @@ const appData = {
 
     appData.fullPrice = appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent;
 
-    //3
-    appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
+    
+    appData.updateServicePercentPrice();
   },
 
   showResult: function () {
@@ -187,15 +200,24 @@ const appData = {
     const totalCount = document.querySelector('#total-count');
     const totalCountOther = document.querySelector('#total-count-other');
     const fullTotalCount = document.querySelector('#total-full-count');
-    const totalRollback = document.querySelector('#total-count-rollback');
 
     total.value = appData.screenPrice;
-    totalCount.value = appData.screenCount; //4
+    totalCount.value = appData.screenCount;
     totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber;
     fullTotalCount.value = appData.fullPrice;
-    totalRollback.value = appData.servicePercentPrice; //3
+  },
+
+  logger: function () {
+    // console.log('Название проекта:', appData.title);
+    // console.log('Стоимость экранов:', appData.screenPrice);
+    // console.log('Количество экранов:', appData.screenCount);
+    // console.log('Стоимость доп. услуг (фикс):', appData.servicePricesNumber);
+    // console.log('Стоимость доп. услуг (%):', appData.servicePricesPercent);
+    // console.log('Итоговая стоимость:', appData.fullPrice);
+    // console.log('Откат (%):', appData.rollback);
+    // console.log('Стоимость с учетом отката:', appData.servicePercentPrice);
+    // console.log('Массив экранов:', appData.screens);
   }
-  
 };
 
 appData.init();
